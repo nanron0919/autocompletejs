@@ -9,11 +9,13 @@ html, body {
     z-index: 9999;
 }
 .autocomplete-list li {
+    background: #fff;
     border: 1px solid #ccc;
     border-bottom: none;
     list-style: none;
     padding: 3px;
 }
+.autocomplete-list li:hover,
 .autocomplete-list .active {
     background: #ddd;
 }
