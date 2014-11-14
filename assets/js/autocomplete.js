@@ -9,6 +9,18 @@ var Autocomplete = (function(document) {
         };
     }
 
+    if ('undefined' === typeof [].filter) {
+        Array.prototype.filter = function(func) {
+            for (var i = 0; i < this.length; i++) {
+                if (false === func(this[i])) {
+                    delete this[i];
+                }
+            }
+
+            return this;
+        };
+    }
+
     return function(form, callback) {
         callback = callback || function() {};
 
