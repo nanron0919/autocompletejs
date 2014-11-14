@@ -6,10 +6,6 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Demo - Auto Complete</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="/css/font-awesome.css" rel="stylesheet">
-    <link href="/css/main.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./assets/css/main.css">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -20,16 +16,28 @@
     <link rel="shortcut icon" href="/ico/favicon.ico">
 </head>
 <body>
-    <form class="autocomplete-form" action="./assets/js/list.js" method="post">
-        <header>
-            <ul class="nav clearfix">
-                <li class="ref-item"><a href="/">Home</a></li>
-                <li class="ref-item"><a target="_blank" href="http://blog.norman-chen.me">Blog</a></li>
-            </ul>
-        </header>
+    <form class="autocomplete-form" action="./assets/js/list.js" method="get">
         <h1>Auto Complete</h1>
-        <input type="text" class="keyword" placeholder="Keyword" />
+        <input type="text" class="keyword" id="keyword" placeholder="Keyword" />
     </form>
     <script src="./assets/js/autocomplete.js"></script>
+    <script>
+    Autocomplete(document.querySelector('.autocomplete-form'), function(data, obj, list) {
+        var items = list.querySelectorAll('li'),
+            item_text;
+
+        data.filter(function(el) {
+            return obj.value.toLowerCase() === el.substr(0, obj.value.length).toLowerCase();
+        });
+
+        for (var i = 0; i < items.length; i++) {
+            item_text = items.item(i).textContent.toLowerCase();
+
+            if (obj.value.toLowerCase() !== item_text.substr(0, obj.value.length)) {
+                items.item(i).remove();
+            }
+        }
+    });
+    </script>
 </body>
 </html>
