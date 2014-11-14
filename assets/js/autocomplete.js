@@ -48,13 +48,17 @@ var Autocomplete = (function(document) {
             },
             autocomplete = {
                 fetchRemoteData: function(url, keyword, func) {
-                    var xhr = new XMLHttpRequest();
+                    var xhr = new XMLHttpRequest(),
+                        data;
+
                     xhr.open('GET', url + '?q=' + keyword, true);
                     xhr.responseType = 'json';
                     xhr.onreadystatechange = function(res) {
                         // done
                         if (4 === this.readyState) {
-                            func(this.response || this.responseText);
+                            data = this.response || this.responseText;
+                            data = ('string' === typeof data ? JSON.parse(data) : data);
+                            func(data);
                         }
                     };
                     xhr.send();
@@ -72,6 +76,7 @@ var Autocomplete = (function(document) {
                                 el.remove();
                             }
                             else {
+                                el.textContent = '';
                                 el.removeNode();
                             }
                         });
@@ -103,6 +108,22 @@ var Autocomplete = (function(document) {
                         parent.appendChild(ul);
                     }
                 },
+                getDataSet: function(el, name) {
+                    if ('undefined' === typeof el.dataset) {
+                        return el.getAttribute('data-' + name);
+                    }
+                    else {
+                        return el.dataset[name];
+                    }
+                },
+                setDataSet: function(el, name, value) {
+                    if ('undefined' === typeof el.dataset) {
+                        el.setAttribute('data-' + name, value);
+                    }
+                    else {
+                        el.dataset[name] = value;
+                    }
+                },
                 moveHighlight: function(base, dir) {
                     var list = autocomplete.getListElement(base.parentNode),
                         list_item, active_index, target_item;
@@ -110,7 +131,7 @@ var Autocomplete = (function(document) {
                     if ('undefined' === typeof list.length) {
                         list_item = selector('li', list);
                         list_item = list_item instanceof Array ? list_item : [list_item];
-                        active_index = list.dataset.active_index || -1;
+                        active_index = autocomplete.getDataSet(list, 'active_index') || -1;
 
                         autocomplete.setClassName(list_item, '');
 
@@ -126,7 +147,7 @@ var Autocomplete = (function(document) {
                         active_index = (0 > active_index ? list_item.length - 1 : active_index);
                         active_index = (list_item.length <= active_index ? 0 : active_index);
 
-                        list.dataset.active_index = active_index;
+                        autocomplete.setDataSet(list, 'active_index', active_index);
                         target_item = list_item[active_index];
 
                         autocomplete.setClassName(target_item, 'active');
