@@ -8,13 +8,13 @@ Go to [Live Demo](http://demo-localhost/demos/autocomplete/)
 Example:
 Put the code in the end of &lt;body&gt;
 
-    &lt;script src="./assets/js/autocomplete.js"&gt;&lt;/script&gt;
+    <script src="autocomplete.js"></script>
   
-    &lt;script&gt;
+    <script>
   
       Autocomplete([Dom Element], [CALLBACK]);
             
-    &lt;/script&gt;
+    </script>
   
   
 > it works on chrome(lastest), firefox(lastest), safari(lastest), IE (>=9)
