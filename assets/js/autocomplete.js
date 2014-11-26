@@ -11,13 +11,15 @@ var Autocomplete = (function(document) {
 
     if ('undefined' === typeof [].filter) {
         Array.prototype.filter = function(func) {
+            var new_array = [];
+
             for (var i = 0; i < this.length; i++) {
-                if (false === func(this[i])) {
-                    delete this[i];
+                if (true === func(this[i])) {
+                    new_array.push(this[i]);
                 }
             }
 
-            return this;
+            return new_array;
         };
     }
 
